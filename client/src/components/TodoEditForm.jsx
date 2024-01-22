@@ -8,7 +8,6 @@ export default function TodoEditForm({ task, onEditTodo }) {
         evt.preventDefault();
         onEditTodo(value, task.id);
         setValue("");
-        
     }
 
     return (

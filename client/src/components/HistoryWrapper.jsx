@@ -1,21 +1,24 @@
 import { useEffect, useState } from "react"
 import Todo from "./Todo";
 import TodoForm from "./TodoForm";
+import { useTodos } from "../hooks/useTodos";
 
 export default function HistoryWrapper() {
 
     const [todos, setTodos] = useState([]);
+    const { getHistoryTodos } = useTodos();
 
-    useEffect(() => {
-        fetch("http://localhost:3030/tasks-history")
-            .then(response => response.json())
-            .then(data => {
-               setTodos(data.map(task => ({...task, isEditing: false})))
-            })
+
+    useEffect( () => {
+        async function getData(){
+            setTodos(await getHistoryTodos())
+        }
+       
+        getData()
     }, [])
 
     async function handleAddTodo(taskName) {
-        console.log(taskName)
+        console.log('adding: ',taskName)
 
         try {
             const response = await fetch('http://localhost:3030/todo', {
@@ -26,7 +29,11 @@ export default function HistoryWrapper() {
                 body: JSON.stringify({ label: taskName })
             });
 
-            if(response.ok) console.log(response)
+            if(response.ok){
+                const data = await response.json();
+                console.log('data retrived: ',data)
+                setTodos(data)
+            }
             else console.error('Error al crear el todo');
 
         } catch (error) {
