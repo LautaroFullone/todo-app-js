@@ -1,14 +1,15 @@
 import { useState } from "react";
 import TodoForm from "./TodoForm";
-import { v4 as uuidv4 } from 'uuid';
 import Todo from "./Todo";
 import TodoEditForm from "./TodoEditForm";
 import Filter from "./Filter";
-
+import { useTodos } from "../hooks/useTodos";
 
 export default function TodoWrapper() {
 
-    const [todos, setTodos] = useState([])
+    const { todos, handleAddTodo, handleDeleteTodo, handleEditTodo, 
+            handleToggleComplete, handleToggleEdit } = useTodos();
+            
     const [filter, setFilter] = useState("")
 
     let filteredTodos = [];
@@ -17,33 +18,6 @@ export default function TodoWrapper() {
         filteredTodos = todos.filter(t => t.label.toLowerCase().includes(filter.toLowerCase()));
     else
         filteredTodos = todos;
-
-    function handleAddTodo(todo) {
-        let newTodo = { id: uuidv4(), label: todo, isCompleted: false, isEditing: false };
-        setTodos([...todos, newTodo]);
-    }
-
-    function handleToggleComplete(todoID) {
-        setTodos(todos.map(todo => todo.id === todoID
-            ? { ...todo, isCompleted: !todo.isCompleted }
-            : todo))
-    }
-
-    function handleDeleteTodo(todoID) {
-        setTodos(todos.filter(t => t.id !== todoID))
-    }
-
-    function handleToggleEdit(todoID) {
-        setTodos(todos.map(todo => todo.id === todoID
-            ? { ...todo, isEditing: !todo.isEditing }
-            : todo))
-    }
-
-    function handleEditTodo(newLabel, todoID) {
-        setTodos(todos.map(todo => todo.id === todoID
-            ? { ...todo, label: newLabel, isEditing: !todo.isEditing }
-            : todo))
-    }
 
     return (
         <div className="TodoWrapper">
