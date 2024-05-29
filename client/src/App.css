@@ -24,7 +24,7 @@ h1 {
     padding: 2rem;
     border-radius: 5px; 
     text-align: center;
-    margin: 100px 500px;
+    margin: 100px auto;
 }
 
 .TodoForm {

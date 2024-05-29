@@ -29,7 +29,7 @@ export default function TodoWrapper() {
             { 
                 (todos.length > 0) 
                     ?   <>
-                            <Filter onFilter={(evt) => setFilter(evt.target.value)} />
+                            <Filter onFilter={(value) => setFilter(value)} />
 
                             { (filteredTodos.length === 0 && filter !== '') 
                                 && <p className="text-muted">There are not records matching the filter</p> }
